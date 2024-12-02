@@ -18,11 +18,11 @@ public class LevelGeneratorWeights
     [SerializeField] public bool useYPositionAsInput;
     [SerializeField] public float[] yPositionWeights;
 
-    //[SerializeField] public DirectionalBools acknowledgeBounds;
+    [SerializeField] public WaysBools acknowledgeBounds;
 
-    public LevelGeneratorWeights(int uniqueTileCount, int neighborhoodRadius, bool useXPositionAsInput, bool useYPositionAsInput/*, DirectionalBools acknowledgeBounds*/)
+    public LevelGeneratorWeights(int uniqueTileCount, int neighborhoodRadius, bool useXPositionAsInput, bool useYPositionAsInput, WaysBools acknowledgeBounds)
     {
-        //this.acknowledgeBounds = acknowledgeBounds;
+        this.acknowledgeBounds = acknowledgeBounds;
         this.neighborhoodRange = neighborhoodRadius;
         this.useXPositionAsInput = useXPositionAsInput;
         this.useYPositionAsInput = useYPositionAsInput;

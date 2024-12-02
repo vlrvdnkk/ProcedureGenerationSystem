@@ -113,19 +113,19 @@ public class GeneratorEngine
 
     private void ApplyOutOfBoundsWeight(int x, int y, int tileIndex, int offsetX, int offsetY)
     {
-        if (offsetX < 0 /*&& weights.acknowledgeBounds.left*/)
+        if (offsetX < 0 && weights.acknowledgeBounds.Left)
         {
             unactivated[x, y, tileIndex] += weights.GetWeight(tileIndex, offsetX + neighborhoodRadius, offsetY + neighborhoodRadius, uniqueCount);
         }
-        else if (offsetY < 0 /*&& weights.acknowledgeBounds.bottom*/)
+        else if (offsetY < 0 && weights.acknowledgeBounds.Bottom)
         {
             unactivated[x, y, tileIndex] += weights.GetWeight(tileIndex, offsetX + neighborhoodRadius, offsetY + neighborhoodRadius, uniqueCount + 1);
         }
-        else if (offsetX >= bounds.size.x /*&& weights.acknowledgeBounds.right*/)
+        else if (offsetX >= bounds.size.x && weights.acknowledgeBounds.Right)
         {
             unactivated[x, y, tileIndex] += weights.GetWeight(tileIndex, offsetX + neighborhoodRadius, offsetY + neighborhoodRadius, uniqueCount + 2);
         }
-        else if (offsetY >= bounds.size.y /*&& weights.acknowledgeBounds.top*/)
+        else if (offsetY >= bounds.size.y && weights.acknowledgeBounds.Top)
         {
             unactivated[x, y, tileIndex] += weights.GetWeight(tileIndex, offsetX + neighborhoodRadius, offsetY + neighborhoodRadius, uniqueCount + 3);
         }

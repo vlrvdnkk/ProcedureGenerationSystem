@@ -8,7 +8,7 @@ public class BorderManager
     [SerializeField] private bool[] bottomBorder;
     [SerializeField] private bool[] leftBorder;
     [SerializeField] private bool[] rightBorder;
-    [SerializeField] private WaysBools enforceBorder;
+    public WaysBools enforceBorder;
 
     public BorderManager(int tileCount, WaysBools enforceBorder)
     {

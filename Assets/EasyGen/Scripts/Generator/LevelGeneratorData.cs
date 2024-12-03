@@ -6,7 +6,10 @@ public class LevelGeneratorData : ScriptableObject
 {
     public int layerCount = 1;
 
-    public LevelGeneratorWeights weights;
+    public TileLayerManager[] UniqueTiles;
+    public LevelGeneratorWeights Weights;
+    public CouplingType CouplingType;
 
-    public bool[] connectivityData;
+    public bool[] CouplingData;
+    public BorderManager BorderCoupling;
 }

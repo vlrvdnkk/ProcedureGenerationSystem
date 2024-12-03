@@ -53,7 +53,7 @@ public abstract class CouplingData
         return pos.x >= 0 && pos.y >= 0 && pos.x < bounds.size.x && pos.y < bounds.size.y;
     }
 
-    public static string GetConnectivityTypeString(CouplingType type) =>
+    public static string GetCouplingTypeString(CouplingType type) =>
         type switch
         {
             CouplingType.FourTiles => "Four way",

@@ -1,64 +1,67 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public enum CouplingType
-{
-    FourTiles,
-    EightTiles,
-    HexagonalTiles
-}
 
-public abstract class CouplingData
-{
-    public abstract CouplingType Type { get; }
 
-    public abstract int GetDirectionCount();
-
-    public abstract int GetOppositeDirection(int direction);
-
-    public abstract bool[] GetCouplingArray();
-
-    public abstract Vector2Int GetCouplingOffset(int direction, Vector2Int pos, int startY);
-
-    public abstract bool GetCouple(int indexA, int indexB, int direction);
-
-    public abstract void SetCouple(int indexA, int indexB, int direction, bool value);
-
-    public int GetLCVHeuristic(Vector2Int pos, int startY, IndexedSet[,] domains, BoundsInt bounds, int index)
+    public enum CouplingType
     {
-        int size = 0;
+        FourTiles,
+        EightTiles,
+        HexagonalTiles
+    }
 
-        for (int d = 0; d < GetDirectionCount(); d++)
+    public abstract class CouplingData
+    {
+        public abstract CouplingType Type { get; }
+
+        public abstract int GetDirectionCount();
+        public abstract int GetOppositeDirection(int direction);
+
+        public abstract bool[] GetCouplingArray();
+
+        public abstract Vector2Int GetCouplingOffset(int direction, Vector2Int pos, int startY);
+
+        public abstract bool GetCoupling(int indexA, int indexB, int direction);
+        public abstract void SetCoupling(int indexA, int indexB, int direction, bool value);
+
+        public int GetLCVHeuristic(Vector2Int pos, int startY, SparseSet[,] domains, BoundsInt bounds, int index)
         {
-            Vector2Int adjacentPosition = pos + GetCouplingOffset(d, pos, startY);
+            int size = 0;
 
-            if (IsWithinBounds(adjacentPosition, bounds))
+            for (int d = 0; d < GetDirectionCount(); d++)
             {
-                IndexedSet domain = domains[adjacentPosition.x, adjacentPosition.y];
-                foreach (int tileIndex in domain)
+                Vector2Int adjacentPosition = pos + GetCouplingOffset(d, pos, startY);
+
+                if (adjacentPosition.x >= 0 && adjacentPosition.y >= 0 && adjacentPosition.x < bounds.size.x && adjacentPosition.y < bounds.size.y)
                 {
-                    if (!GetCouple(index, tileIndex, d))
+                    SparseSet domain = domains[adjacentPosition.x, adjacentPosition.y];
+                    for (int i = 0; i < domain.Count; i++)
                     {
-                        size++;
+                        if (!GetCoupling(index, domain.GetDense(i), d))
+                        {
+                            size++;
+                        }
                     }
                 }
             }
+
+            return size;
         }
 
-        return size;
-    }
-
-    private bool IsWithinBounds(Vector2Int pos, BoundsInt bounds)
-    {
-        return pos.x >= 0 && pos.y >= 0 && pos.x < bounds.size.x && pos.y < bounds.size.y;
-    }
-
-    public static string GetCouplingTypeString(CouplingType type) =>
-        type switch
+        public static string GetCouplingTypeString(CouplingType type)
         {
-            CouplingType.FourTiles => "Four way",
-            CouplingType.EightTiles => "Eight way",
-            CouplingType.HexagonalTiles => "Hexagonal",
-            _ => "Invalid connectivity type"
-        };
-}
+            switch (type)
+            {
+                case CouplingType.FourTiles:
+                    return "Four way";
+                case CouplingType.EightTiles:
+                    return "Eight way";
+                case CouplingType.HexagonalTiles:
+                    return "Hexagonal";
+                default:
+                    return "Invalid connectivity type";
+            }
+        }
+    }

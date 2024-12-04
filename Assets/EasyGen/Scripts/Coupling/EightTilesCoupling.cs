@@ -35,9 +35,9 @@ public class EightTilesCoupling : CouplingData
     public override Vector2Int GetCouplingOffset(int direction, Vector2Int pos, int startY)
         => Directions[direction];
 
-    public override bool GetCouple(int indexA, int indexB, int direction)
+    public override bool GetCoupling(int indexA, int indexB, int direction)
         => connectivity[direction * tileCount * tileCount + indexA * tileCount + indexB];
 
-    public override void SetCouple(int indexA, int indexB, int direction, bool value)
+    public override void SetCoupling(int indexA, int indexB, int direction, bool value)
         => connectivity[direction * tileCount * tileCount + indexA * tileCount + indexB] = value;
 }

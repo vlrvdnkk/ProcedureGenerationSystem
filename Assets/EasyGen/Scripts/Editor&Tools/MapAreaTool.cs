@@ -1,20 +1,19 @@
+using InteliMapPro;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEngine.GraphicsBuffer;
 
 [EditorTool("Schematic Generator Tool", typeof(Builder))]
 public class MapAreaTool : TilemapAreaTool
 {
-    private Tilemap map;
+    private Tilemap tileMap;
 
     public override void OnEnable()
     {
         base.OnEnable();
-        map = FindObjectOfType<Tilemap>();
+        tileMap = FindObjectOfType<Tilemap>();
     }
 
     public override Color handleColor => Color.magenta;

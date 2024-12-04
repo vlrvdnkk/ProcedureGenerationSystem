@@ -4,10 +4,10 @@ using UnityEngine;
 [Serializable]
 public class BorderManager
 {
-    [SerializeField] private bool[] topBorder;
-    [SerializeField] private bool[] bottomBorder;
-    [SerializeField] private bool[] leftBorder;
-    [SerializeField] private bool[] rightBorder;
+    [SerializeField] public bool[] topBorder;
+    [SerializeField] public bool[] bottomBorder;
+    [SerializeField] public bool[] leftBorder;
+    [SerializeField] public bool[] rightBorder;
     public WaysBools enforceBorder;
 
     public BorderManager(int tileCount, WaysBools enforceBorder)

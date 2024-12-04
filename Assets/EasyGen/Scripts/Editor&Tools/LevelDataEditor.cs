@@ -1,14 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(LevelGeneratorData))]
+[CustomEditor(typeof(GeneratorData))]
 public class LevelDataEditor : Editor
 {
-    private LevelGeneratorData lgd;
+    private GeneratorData lgd;
 
     private void OnEnable()
     {
-        lgd = (LevelGeneratorData)target;
+        lgd = (GeneratorData)target;
     }
 
     public override void OnInspectorGUI()
@@ -25,15 +25,15 @@ public class LevelDataEditor : Editor
     private void DisplayGeneratorInfo()
     {
         var layerCount = lgd.layerCount;
-        var uniqueTileCount = lgd.UniqueTiles.Length;
-        var neighborhoodRadius = lgd.Weights.GetNeighborhoodRadius();
-        var parameterCount = lgd.Weights.GetParameterCount();
-        var trainingEpochs = lgd.Weights.TrainingEpochs;
-        var couplingType = CouplingData.GetCouplingTypeString(lgd.CouplingType);
-        var xPositionInput = lgd.Weights.useXPositionAsInput ? "X" : "_";
-        var yPositionInput = lgd.Weights.useYPositionAsInput ? "X" : "_";
-        var acknowledgeBounds = lgd.Weights.acknowledgeBounds;
-        var enforceBorder = lgd.BorderCoupling.enforceBorder;
+        var uniqueTileCount = lgd.uniqueTiles.Length;
+        var neighborhoodRadius = lgd.weights.GetNeighborhoodRadius();
+        var parameterCount = lgd.weights.GetParameterCount();
+        var trainingEpochs = lgd.weights.TrainingEpochs;
+        var couplingType = CouplingData.GetCouplingTypeString(lgd.couplingType);
+        var xPositionInput = lgd.weights.useXPositionAsInput ? "X" : "_";
+        var yPositionInput = lgd.weights.useYPositionAsInput ? "X" : "_";
+        var acknowledgeBounds = lgd.weights.acknowledgeBounds;
+        var enforceBorder = lgd.borderCoupling.enforceBorder;
 
         GUILayout.Label($"      {layerCount} layers.");
         GUILayout.Label($"      {uniqueTileCount} unique tiles.");

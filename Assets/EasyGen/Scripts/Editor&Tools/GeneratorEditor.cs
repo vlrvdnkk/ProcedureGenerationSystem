@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(Generator))]
-public class InteliMapGeneratorEditor : Editor
+public class GeneratorEditor : Editor
 {
     private Generator mapGenerator;
 
@@ -97,11 +97,11 @@ public class InteliMapGeneratorEditor : Editor
             GUILayout.Label($"      {mapGenerator.NumUniqueTiles()} unique tiles.");
             GUILayout.Label($"      Neighborhood radius of {mapGenerator.GetNeighborhoodRadius()}.");
             GUILayout.Label($"      {mapGenerator.GetParameterCount()} total parameters.");
-            GUILayout.Label($"      {mapGenerator.generatorData.weights.epochsTrained} total epochs trained.");
-            GUILayout.Label($"      Coupling: {CouplingData.GetCouplingTypeString(mapGenerator.generatorData.connectivityType)}");
+            GUILayout.Label($"      {mapGenerator.generatorData.weights.TrainingEpochs} total epochs trained.");
+            GUILayout.Label($"      Coupling: {CouplingData.GetCouplingTypeString(mapGenerator.generatorData.couplingType)}");
             GUILayout.Label($"      Positional Inputs: X: [{(mapGenerator.generatorData.weights.useXPositionAsInput ? "X" : "_")}] Y: [{(mapGenerator.generatorData.weights.useYPositionAsInput ? "X" : "_")}]");
             GUILayout.Label($"      Acknowledges bounds: {mapGenerator.generatorData.weights.acknowledgeBounds}.");
-            GUILayout.Label($"      Enforces border connectivity: {mapGenerator.generatorData.borderConnectivity.enforceConnectivity}.");
+            GUILayout.Label($"      Enforces border connectivity: {mapGenerator.generatorData.borderCoupling.enforceBorder}.");
         }
     }
 

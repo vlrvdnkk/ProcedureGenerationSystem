@@ -2,102 +2,114 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrioritySelectionEngine
-{
-    private IndexedSet[,] tileSets;
+
+    public class PrioritySelectionEngine
+    {
+    public PrioritySelectionEngine(SparseSet[,] domains, Priority[,] priorities, BoundsInt bounds, float randomChance)
+    {
+        this.domains = domains;
+        this.priorities = priorities;
+        this.randomChance = randomChance;
+
+        count = 0;
+
+        remainingPositions = new Vector2Int[bounds.size.x * bounds.size.y];
+    }
+
+    private SparseSet[,] domains;
     private Priority[,] priorities;
 
     private Vector2Int[] remainingPositions;
     private float randomChance;
     private int count;
 
-    public PrioritySelectionEngine(IndexedSet[,] tileSets, Priority[,] priorities, BoundsInt bounds, float randomChance)
+    public bool IsDone()
     {
-        this.tileSets = tileSets;
-        this.priorities = priorities;
-        this.randomChance = randomChance;
-
-        count = 0;
-        remainingPositions = new Vector2Int[bounds.size.x * bounds.size.y];
+        return count == 0;
     }
-
-    public bool IsDone() => count == 0;
 
     public void Add(Vector2Int pos)
     {
-        remainingPositions[count++] = pos;
+        remainingPositions[count] = pos;
+        count++;
     }
 
     public (Vector2Int, int) Next(System.Random rand)
     {
-        int smallestSize = int.MaxValue;
+        int smallestSize = 99999999;
         int highestPriority = 0;
-        List<int> smallestIndices = new List<int>();
+        List<int> smallestIndicies = new List<int>();
 
         for (int j = 0; j < count; j++)
         {
             Vector2Int pos = remainingPositions[j];
-            Priority priority = priorities[pos.x, pos.y];
-            int level = priority.PriorityLevel;
-            int size;
+            int level = priorities[pos.x, pos.y].PriorityLevel;
 
             if (level > 0)
             {
-                size = tileSets[pos.x, pos.y].OverlapCount(priority.PrioritySet);
+                int size = domains[pos.x, pos.y].OverlapCount(priorities[pos.x, pos.y].PrioritySet);
+
                 if (level > highestPriority)
                 {
                     highestPriority = level;
                     smallestSize = size;
-                    smallestIndices.Clear();
-                    smallestIndices.Add(j);
+
+                    smallestIndicies.Clear();
+                    smallestIndicies.Add(j);
                 }
-                else if (size < smallestSize && size != 0)
+                else
                 {
-                    smallestSize = size;
-                    smallestIndices.Clear();
-                    smallestIndices.Add(j);
-                }
-                else if (size == smallestSize)
-                {
-                    smallestIndices.Add(j);
+                    if (size < smallestSize && size != 0)
+                    {
+                        smallestSize = size;
+
+                        smallestIndicies.Clear();
+                        smallestIndicies.Add(j);
+                    }
+                    else if (size == smallestSize)
+                    {
+                        smallestIndicies.Add(j);
+                    }
                 }
             }
-            else if (highestPriority == 0)
+            else if (highestPriority == 0) // no non-zero priorities yet
             {
-                size = tileSets[pos.x, pos.y].Count;
-                if (size < smallestSize)
+                if (domains[pos.x, pos.y].Count < smallestSize)
                 {
-                    smallestSize = size;
-                    smallestIndices.Clear();
-                    smallestIndices.Add(j);
+                    smallestSize = domains[pos.x, pos.y].Count;
+
+                    smallestIndicies.Clear();
+                    smallestIndicies.Add(j);
                 }
-                else if (size == smallestSize)
+                else if (domains[pos.x, pos.y].Count == smallestSize)
                 {
-                    smallestIndices.Add(j);
+                    smallestIndicies.Add(j);
                 }
             }
         }
+
+        int randIdx;
+        Vector2Int val;
 
         if (highestPriority == 0 && (float)rand.NextDouble() < randomChance)
         {
-            int randomIndex = rand.Next(count);
-            Vector2Int randomPosition = remainingPositions[randomIndex];
-            RemoveAt(randomIndex);
-            return (randomPosition, 0);
+            randIdx = rand.Next(count);
+            val = remainingPositions[randIdx];
+
+            count--;
+            remainingPositions[randIdx] = remainingPositions[count];
+
+            return (val, 0);
         }
 
-        int selectedIdx = smallestIndices[rand.Next(smallestIndices.Count)];
-        Vector2Int selectedPosition = remainingPositions[selectedIdx];
-        RemoveAt(selectedIdx);
-        return (selectedPosition, highestPriority);
-    }
+        randIdx = smallestIndicies[rand.Next(smallestIndicies.Count)];
+        val = remainingPositions[randIdx];
 
-    private void RemoveAt(int index)
-    {
         count--;
-        if (index < count)
-        {
-            remainingPositions[index] = remainingPositions[count];
-        }
+        remainingPositions[randIdx] = remainingPositions[count];
+
+        return (val, highestPriority);
     }
 }
+    
+

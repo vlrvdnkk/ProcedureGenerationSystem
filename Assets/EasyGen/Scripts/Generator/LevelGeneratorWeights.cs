@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class LevelGeneratorWeights
+public class GeneratorWeights
 {
     [SerializeField] private float[] weights;
     [SerializeField] private float[] biases;
@@ -20,7 +20,7 @@ public class LevelGeneratorWeights
 
     [SerializeField] public WaysBools acknowledgeBounds;
 
-    public LevelGeneratorWeights(int uniqueTileCount, int neighborhoodRadius, bool useXPositionAsInput, bool useYPositionAsInput, WaysBools acknowledgeBounds)
+    public GeneratorWeights(int uniqueTileCount, int neighborhoodRadius, bool useXPositionAsInput, bool useYPositionAsInput, WaysBools acknowledgeBounds)
     {
         this.acknowledgeBounds = acknowledgeBounds;
         this.neighborhoodRange = neighborhoodRadius;

@@ -5,15 +5,15 @@ using UnityEngine;
 public class Priority
 {
     public int PriorityLevel { get; private set; } = 0;
-    public IndexedSet PrioritySet { get; private set; } = null;
+    public SparseSet PrioritySet { get; private set; } = null;
 
-    public Priority(int priorityLevel = 0, IndexedSet prioritySet = null)
+    public Priority(int priorityLevel = 0, SparseSet prioritySet = null)
     {
         PriorityLevel = priorityLevel;
         PrioritySet = prioritySet;
     }
 
-    public void SetPriority(int priorityLevel, IndexedSet prioritySet)
+    public void SetPriority(int priorityLevel, SparseSet prioritySet)
     {
         if (PriorityLevel != priorityLevel || PrioritySet != prioritySet)
         {
